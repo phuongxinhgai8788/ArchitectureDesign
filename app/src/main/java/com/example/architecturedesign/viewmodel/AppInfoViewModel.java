@@ -1,6 +1,5 @@
 package com.example.architecturedesign.viewmodel;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import androidx.databinding.BaseObservable;
@@ -28,13 +27,14 @@ public class AppInfoViewModel extends BaseObservable {
     }
 
     @Bindable
-    public String getAppUsage(){
+    public String getAppUsage() {
         long millisecond = appInfo.getAppUsage();
-        long hours = (millisecond/1000)/3600;
-        long minutes = (millisecond/1000)/60;
-        long seconds = (millisecond/1000)%60;
-        return "Usage time: "+hours+"h:"+minutes+"m:"+seconds+"s";
+        long hours = (millisecond / 1000) / 3600;
+        long minutes = (millisecond / 1000) / 60;
+        long seconds = (millisecond / 1000) % 60;
+        return "Usage time: " + hours + "h:" + minutes + "m:" + seconds + "s";
     }
+
     private void setAppName(String appName) {
         appInfo.setAppName(appName);
         notifyPropertyChanged(BR.appName);
@@ -45,7 +45,7 @@ public class AppInfoViewModel extends BaseObservable {
         notifyPropertyChanged(BR.appIcon);
     }
 
-    private void setAppUsage(Long appUsage){
+    private void setAppUsage(Long appUsage) {
         appInfo.setAppUsage(appUsage);
         notifyPropertyChanged(BR.appUsage);
     }

@@ -20,8 +20,9 @@ public class MainActivityViewModel extends AndroidViewModel {
         super(application);
         this.repository = Repository.getInstance(application);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public List<AppInfo> getMostUsageAppInfo(){
+    public List<AppInfo> getMostUsageAppInfo() {
         return repository.getMostUsageAppInfo();
     }
 

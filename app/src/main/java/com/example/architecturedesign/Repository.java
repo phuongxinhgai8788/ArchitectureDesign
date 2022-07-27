@@ -26,21 +26,22 @@ public class Repository {
     private Context context;
     private final String TAG = "Repository";
 
-    private Repository(Context context){
+    private Repository(Context context) {
         this.context = context;
     }
 
-    public static Repository getInstance(Context context){
-        if(INSTANCE==null){
-            synchronized(Repository.class){
-                if (INSTANCE == null){
+    public static Repository getInstance(Context context) {
+        if (INSTANCE == null) {
+            synchronized (Repository.class) {
+                if (INSTANCE == null) {
                     INSTANCE = new Repository(context);
                 }
             }
         }
         return INSTANCE;
     }
-    public Map<String,UsageStats> loadUsageStats(){
+
+    public Map<String, UsageStats> loadUsageStats() {
         UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
 //            LiveData<List<UsageStats>> usageStatsList;
 //            ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -59,11 +60,11 @@ public class Repository {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<String, Long> sortUsageStatsBySpentTime(){
+    public Map<String, Long> sortUsageStatsBySpentTime() {
         Map<String, UsageStats> usageStatsMap = loadUsageStats();
         Set<Map.Entry<String, UsageStats>> setEntries = usageStatsMap.entrySet();
         Map<String, Long> spentTimeMap = new LinkedHashMap<String, Long>();
-        for(Map.Entry<String, UsageStats> entry:setEntries){
+        for (Map.Entry<String, UsageStats> entry : setEntries) {
             UsageStats usageStats = entry.getValue();
             long spentTime = usageStats.getTotalTimeInForeground();
             spentTimeMap.put(entry.getKey(), spentTime);
@@ -73,40 +74,40 @@ public class Repository {
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
         spentTime.forEach(i -> {
-            Log.i(TAG, "Spent time: "+i);
+            Log.i(TAG, "Spent time: " + i);
         });
         return spentTimeMap;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private Map<String, Long> getMostUsage(){
+    private Map<String, Long> getMostUsage() {
         Map<String, UsageStats> usageStatsMap = loadUsageStats();
         Set<Map.Entry<String, UsageStats>> setEntries = usageStatsMap.entrySet();
         Map<String, Long> spentTimeMap = new LinkedHashMap<String, Long>();
-        for(Map.Entry<String, UsageStats> entry:setEntries){
+        for (Map.Entry<String, UsageStats> entry : setEntries) {
             UsageStats usageStats = entry.getValue();
             long spentTime = usageStats.getTotalTimeInForeground();
             spentTimeMap.put(entry.getKey(), spentTime);
         }
         Map<String, Long> usageMapDiffZero = spentTimeMap.entrySet().stream()
-                .filter(x -> x.getValue()>0)
+                .filter(x -> x.getValue() > 0)
                 .collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue()));
         Map<String, Long> sortedSpentTimeMap = MapUtil.sortByValueDescendingOrder(usageMapDiffZero);
         List<Long> spentTime = sortedSpentTimeMap.entrySet().stream()
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
         spentTime.forEach(i -> {
-            Log.i(TAG, "Spent time # 0: "+i);
+            Log.i(TAG, "Spent time # 0: " + i);
         });
         return sortedSpentTimeMap;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public List<AppInfo> getMostUsageAppInfo(){
-        List<AppInfo>  mostUsageAppInfoList = new ArrayList<>();
+    public List<AppInfo> getMostUsageAppInfo() {
+        List<AppInfo> mostUsageAppInfoList = new ArrayList<>();
         AppInfoUtil appInfoUtil = new AppInfoUtil(context);
         Map<String, Long> mostUsageAppMap = getMostUsage();
-        mostUsageAppMap.entrySet().forEach((x) ->{
+        mostUsageAppMap.entrySet().forEach((x) -> {
             AppInfo appInfo = new AppInfo();
             appInfo.setPackageName(x.getKey());
             appInfoUtil.setPackageName(x.getKey());
@@ -118,5 +119,5 @@ public class Repository {
             mostUsageAppInfoList.add(appInfo);
         });
         return mostUsageAppInfoList;
-           }
+    }
 }
