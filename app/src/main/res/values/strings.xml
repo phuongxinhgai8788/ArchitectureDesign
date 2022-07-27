@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">ArchitectureDesign</string>
+    <string name="notification_channel_name">Foreground Application</string>
+    <string name="notification_title">Notification_title</string>
+    <string name="foreground_app">Foreground Application</string>
 </resources>

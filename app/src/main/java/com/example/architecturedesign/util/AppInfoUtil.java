@@ -12,7 +12,7 @@ public class AppInfoUtil {
     private Context context;
     private String packageName;
 
-    public AppInfoUtil(Context context){
+    public AppInfoUtil(Context context) {
         this.context = context;
     }
 
@@ -26,18 +26,19 @@ public class AppInfoUtil {
         return context.getDrawable(R.drawable.ic_launcher_foreground);
     }
 
-    public String getAppName(){
+    public String getAppName() {
         PackageManager packageManager = context.getPackageManager();
         ApplicationInfo applicationInfo = null;
         try {
             applicationInfo = packageManager.getApplicationInfo(packageName, 0);
         } catch (final PackageManager.NameNotFoundException e) {
+
         }
         return (String) (applicationInfo != null ? packageManager.getApplicationLabel(applicationInfo) : "Unknown");
 
     }
 
-    public void setPackageName(String packageName){
+    public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 }
